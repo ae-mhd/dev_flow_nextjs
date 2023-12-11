@@ -2,6 +2,19 @@
 import { HomePageFilters } from "@/constants/filters";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
+type TagType = {
+  _id: number;
+  name: string;
+};
+type HomeFiltersProps = {
+  _id: number;
+  title: string;
+  tags: TagType[];
+  auther: string;
+  upvotes: number;
+  views: number;
+  createdAt: string;
+};
 
 const HomeFilters = () => {
   const [active, setactive] = useState("newest");

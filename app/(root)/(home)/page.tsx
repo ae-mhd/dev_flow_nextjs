@@ -1,10 +1,49 @@
 import HomeFilters from "@/components/home/HomeFilters";
 import Filter from "@/components/shared/Filter";
+import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 export default function Home() {
+  const questions = [
+    // {
+    //   _id: 1,
+    //   title: "This is Dommy data",
+    //   tags: [
+    //     {
+    //       _id: 1,
+    //       name: "python",
+    //     },
+    //     {
+    //       _id: 2,
+    //       name: "javascript",
+    //     },
+    //   ],
+    //   auther: "John Doe",
+    //   upvotes: 10,
+    //   views: 2,
+    //   createdAt: "2023-12-10",
+    // },
+    // {
+    //   _id: 2,
+    //   title: "This is Dommy data for test",
+    //   tags: [
+    //     {
+    //       _id: 1,
+    //       name: "python",
+    //     },
+    //     {
+    //       _id: 2,
+    //       name: "javascript",
+    //     },
+    //   ],
+    //   auther: "John Doe",
+    //   upvotes: 10,
+    //   views: 2,
+    //   createdAt: "2023-12-10",
+    // },
+  ];
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -30,6 +69,20 @@ export default function Home() {
         />
       </div>
       <HomeFilters />
+      <div className="mt-10 flex w-full flex-col gap-6">
+        {questions.length > 0 ? (
+          questions.map((question) => question.auther)
+        ) : (
+          <NoResult
+            title="There is no question to show"
+            description="Be the first to break the silence! ask a question and Kickstart the
+              discussion. our query could be the next big thing. others learn from.
+              get involved!"
+            link="/ask-question"
+            linkTitle="Ask a question"
+          />
+        )}
+      </div>
     </>
   );
 }
