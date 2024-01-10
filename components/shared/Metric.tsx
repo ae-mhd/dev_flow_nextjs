@@ -9,7 +9,7 @@ interface MetricProps {
   value: string | number;
   title: string;
   textStyles: string;
-  isAuther?: boolean;
+  isAuthor?: boolean;
   href?: string;
 }
 
@@ -20,7 +20,7 @@ const Metric = ({
   textStyles,
   title,
   value,
-  isAuther,
+  isAuthor,
 }: MetricProps) => {
   const metricContent = (
     <div className="flex-center flex-wrap gap-1">
@@ -35,7 +35,7 @@ const Metric = ({
         {typeof value === "number" ? formatNumber(value) : value}
         <span
           className={`small-regular line-clamp-1 ${
-            isAuther ? "max-sm:hidden" : ""
+            isAuthor ? "max-sm:hidden" : ""
           }`}
         >
           {title}

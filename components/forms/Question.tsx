@@ -20,7 +20,7 @@ import { QuestionsSchema } from "@/lib/validations";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { createQuestion } from "@/lib/actions/question.action";
-import { getUserById } from "@/lib/actions/user.action";
+// import { getUserById } from "@/lib/actions/user.action";
 import { usePathname, useRouter } from "next/navigation";
 const type: any = "create";
 
@@ -28,7 +28,7 @@ const Question = ({ mongoUserId }: { mongoUserId: string }) => {
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  const path = usePathname();
+  const pathname = usePathname();
   // 1. Define your form.
   const form = useForm<z.infer<typeof QuestionsSchema>>({
     resolver: zodResolver(QuestionsSchema),
@@ -47,7 +47,8 @@ const Question = ({ mongoUserId }: { mongoUserId: string }) => {
         title: values.title,
         content: values.explanation,
         tags: values.tags,
-        auther: JSON.parse(mongoUserId),
+        author: JSON.parse(mongoUserId),
+        path: pathname,
       });
       router.push("/");
     } catch (error) {

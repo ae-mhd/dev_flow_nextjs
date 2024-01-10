@@ -11,7 +11,7 @@ interface QuestionCardProps {
     _id: string;
     name: string;
   }[];
-  auther: {
+  author: {
     _id: string;
     name: string;
     picture: string;
@@ -25,14 +25,14 @@ interface QuestionCardProps {
 const QuestionCard = ({
   _id,
   answers,
-  auther,
+  author,
   createdAt,
   tags,
   title,
   upvotes,
   views,
 }: QuestionCardProps) => {
-  console.log(createdAt);
+  console.log(author);
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -55,13 +55,13 @@ const QuestionCard = ({
       </div>
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
-          imgUrl={auther.picture}
+          imgUrl={author?.picture}
           alt="user"
-          value={auther.name}
+          value={author?.name}
           title={`- asked ${getTimestamp(createdAt)}  `}
-          href={`/profile/${auther._id}`}
+          href={`/profile/${author?._id}`}
           textStyles="body-medium text-dark400_light700"
-          isAuther
+          isAuthor
         />
         <Metric
           imgUrl="/assets/icons/like.svg"

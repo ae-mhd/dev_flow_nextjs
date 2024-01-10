@@ -14,6 +14,6 @@ const TagSchema = new Schema<ITag>({
   createdOn: { type: Date, default: Date.now },
 });
 
-const TagModel = models.Tag || model<ITag>("Tag", TagSchema);
+const Tag = models.Tag || model<ITag>("Tag", TagSchema);
 
-export default TagModel;
+export default Tag;

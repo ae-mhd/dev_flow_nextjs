@@ -2,21 +2,37 @@
 
 import Question from "@/database/question.model";
 import { connectionToDatabase } from "../mongoose";
-import TagModel from "@/database/tag.model";
+import Tag from "@/database/tag.model";
+import { CreateQuestionParams, GetQuestionsParams } from "./shared.types";
+import User from "@/database/user.model";
+import { revalidatePath } from "next/cache";
 
-export async function createQuestion(props: any) {
+export async function getQuestions(params: GetQuestionsParams) {
+  try {
+    await connectionToDatabase();
+    const questions = await Question.find({})
+      .populate({ path: "tags", model: Tag })
+      .populate({ path: "author", model: User })
+      .sort({ createdAt: -1 });
+    return { questions };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+export async function createQuestion(props: CreateQuestionParams) {
   try {
     connectionToDatabase();
-    const { title, content, tags, auther, path } = props;
+    const { title, content, tags, author, path } = props;
+    console.log("author", author);
     const question = await Question.create({
       title,
       content,
-      auther,
+      author,
     });
-    console.log("auther", auther);
     const tagDocuments = [];
     for (const tag of tags) {
-      const existingTag = await TagModel.findOneAndUpdate(
+      const existingTag = await Tag.findOneAndUpdate(
         { name: { $regex: new RegExp(`^${tag}$`, "i") } },
         {
           $setOnInser: { name: tag },
@@ -29,6 +45,8 @@ export async function createQuestion(props: any) {
     await Question.findByIdAndUpdate(question._id, {
       $push: { tags: { $each: tagDocuments } },
     });
+
+    revalidatePath(path);
   } catch (error) {
     console.error("Create Question on DB error", error);
   }
