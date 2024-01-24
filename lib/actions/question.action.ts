@@ -24,7 +24,6 @@ export async function createQuestion(props: CreateQuestionParams) {
   try {
     connectionToDatabase();
     const { title, content, tags, author, path } = props;
-    console.log("author", author);
     const question = await Question.create({
       title,
       content,
@@ -35,7 +34,7 @@ export async function createQuestion(props: CreateQuestionParams) {
       const existingTag = await Tag.findOneAndUpdate(
         { name: { $regex: new RegExp(`^${tag}$`, "i") } },
         {
-          $setOnInser: { name: tag },
+          $setOnInsert: { name: tag },
           $push: { questions: question._id },
         },
         { upsert: true, new: true }
