@@ -11,7 +11,7 @@ export const connectionToDatabase = async () => {
       dbName: "devflow",
     });
     isConnected = true;
-    console.log("MongoDB is connected");
+    console.log("===MongoDB is already connected====");
   } catch (error) {
     console.error("MongoDB connection is failed", error);
   }
