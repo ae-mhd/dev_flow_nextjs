@@ -6,7 +6,16 @@ const nextConfig = {
         serverComponentsExternalPackages: ['mongoose']
     },
     images: {
-        domains: ["picsum.photos"]
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '*'
+            },
+            {
+                protocol: 'http',
+                hostname: '*'
+            },
+        ]
     }
 }
 
