@@ -20,10 +20,10 @@ const Page = async () => {
       </div>
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchbar
-          route="/"
+          route="/community"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
-          placeholder="Search for question"
+          placeholder="Search for user"
           otherClasses="flex-1"
         />
         <Filter
