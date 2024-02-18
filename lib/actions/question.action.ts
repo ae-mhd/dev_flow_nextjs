@@ -3,7 +3,11 @@
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import { connectionToDatabase } from "../mongoose";
-import { CreateQuestionParams, GetQuestionsParams } from "./shared.types";
+import {
+  CreateQuestionParams,
+  GetQuestionByIdParams,
+  GetQuestionsParams,
+} from "./shared.types";
 import User from "@/database/user.model";
 import { revalidatePath } from "next/cache";
 
@@ -22,7 +26,27 @@ export async function getQuestions(params: GetQuestionsParams) {
     throw error;
   }
 }
+export async function getQuestionByID(params: GetQuestionByIdParams) {
+  const { questionId } = params;
 
+  try {
+    connectionToDatabase();
+
+    const question = await Question.findById(questionId)
+      .populate({ path: "tags", model: Tag, select: "_id name" }) // auth property tags info
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name picture",
+      }); // add author property from User Model info
+    if (!question) throw Error("Question not found");
+
+    return question;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
 export async function createQuestion(params: CreateQuestionParams) {
   try {
     connectionToDatabase();
