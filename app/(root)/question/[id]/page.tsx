@@ -3,13 +3,22 @@ import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
 import { getQuestionByID } from "@/lib/actions/question.action";
+import { getUserById } from "@/lib/actions/user.action";
 import { getTimestamp } from "@/lib/utils";
+import { auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const question = await getQuestionByID({ questionId: params.id });
+  // console.log(QuestionId);
+  const { userId: clercId } = auth();
+  let mongoUser;
+  if (!mongoUser) {
+    mongoUser = await getUserById({ userId: clercId });
+  }
+  // console.log("question", question);
   return (
     <>
       <div className="flex-start w-full flex-col">
@@ -70,7 +79,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
           />
         ))}
       </div>
-      <Answer />
+      <Answer
+        question={question.content}
+        authorId={JSON.stringify(mongoUser._id)}
+        questionId={JSON.stringify(question._id)}
+      />
     </>
   );
 };
