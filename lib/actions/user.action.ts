@@ -17,7 +17,9 @@ export async function getAllUser(params: any) {
     connectionToDatabase();
 
     // const { page=1,pagesize=20,filter,searchQuery } = params;
-    const users = await User.find({}).sort({ createdAt: -1 });
+    const users = await User.find().sort({
+      createdAt: -1,
+    });
 
     return { users };
   } catch (error) {

@@ -1,9 +1,10 @@
 "use server";
 import Answer from "@/database/answer.model";
 import { connectionToDatabase } from "../mongoose";
-import { CreateAnswerParams } from "./shared.types";
+import { CreateAnswerParams, GetAnswersParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
+import console from "console";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -27,3 +28,16 @@ export async function createAnswer(params: CreateAnswerParams) {
     console.log(error);
   }
 }
+export const getAnswers = async (params: GetAnswersParams) => {
+  const { questionId } = params;
+  try {
+    connectionToDatabase();
+    const answer = await Answer.find({ question: questionId })
+      .populate("author", "_id clerkId name picture")
+      .sort({ createdAt: -1 });
+
+    return { answer };
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -31,6 +31,7 @@ const Answer = ({
   const [isSubmiting, setIsSubmiting] = useState(false);
   const editorRef = useRef(null);
   const { mode } = useTheme();
+
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
     defaultValues: { answer: "" },
