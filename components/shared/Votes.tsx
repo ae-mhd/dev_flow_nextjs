@@ -1,10 +1,14 @@
 "use client";
-import { getQuestionByID, questionUpvote } from "@/lib/actions/question.action";
+import {
+  questionDownvote,
+  questionUpvote,
+} from "@/lib/actions/question.action";
 import { formatNumber } from "@/lib/utils";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 interface Props {
-  type: string;
+  type: "Question" | "Answer";
   itemId: string;
   userId: string;
   upvotes: number;
@@ -23,17 +27,48 @@ const Votes = ({
   hasdownVoted,
   hasSaved,
 }: Props) => {
+  const path = usePathname();
   const handleVote = async (action: string) => {
-    try {
-      const question = await getQuestionByID({
-        questionId: JSON.parse(itemId),
-      });
-      // await questionUpvote ({});
-      console.log(question);
-      // questionVote({ questionId: itemId });
-    } catch (error) {
-      console.log(error);
+    if (!userId) return;
+
+    if (type === "Question") {
+      if (action === "upvote") {
+        await questionUpvote({
+          hasupVoted,
+          hasdownVoted,
+          userId: JSON.parse(userId),
+          questionId: JSON.parse(itemId),
+          path,
+        });
+      } else if (action === "downvote") {
+        await questionDownvote({
+          hasupVoted,
+          hasdownVoted,
+          userId: JSON.parse(userId),
+          questionId: JSON.parse(itemId),
+          path,
+        });
+      }
     }
+    // if (type === "Answer") {
+    //   if (action === "upvote") {
+    //     await answerUpvote({
+    //       hasupVoted,
+    //       hasdownVoted,
+    //       userId: JSON.parse(userId),
+    //       questionId: JSON.parse(itemId),
+    //       path,
+    //     });
+    //   } else if (action === "downvote") {
+    //     await answerDownvote({
+    //       hasupVoted,
+    //       hasdownVoted,
+    //       userId: JSON.parse(userId),
+    //       questionId: JSON.parse(itemId),
+    //       path,
+    //     });
+    //   }
+    // }
   };
   const handleSave = async () => {};
   return (
