@@ -1,4 +1,5 @@
 "use client";
+import { answerDownvote, answerUpvote } from "@/lib/actions/answer.action";
 import {
   questionDownvote,
   questionUpvote,
@@ -50,25 +51,25 @@ const Votes = ({
         });
       }
     }
-    // if (type === "Answer") {
-    //   if (action === "upvote") {
-    //     await answerUpvote({
-    //       hasupVoted,
-    //       hasdownVoted,
-    //       userId: JSON.parse(userId),
-    //       questionId: JSON.parse(itemId),
-    //       path,
-    //     });
-    //   } else if (action === "downvote") {
-    //     await answerDownvote({
-    //       hasupVoted,
-    //       hasdownVoted,
-    //       userId: JSON.parse(userId),
-    //       questionId: JSON.parse(itemId),
-    //       path,
-    //     });
-    //   }
-    // }
+    if (type === "Answer") {
+      if (action === "upvote") {
+        await answerUpvote({
+          hasupVoted,
+          hasdownVoted,
+          userId: JSON.parse(userId),
+          answerId: JSON.parse(itemId),
+          path,
+        });
+      } else if (action === "downvote") {
+        await answerDownvote({
+          hasupVoted,
+          hasdownVoted,
+          userId: JSON.parse(userId),
+          answerId: JSON.parse(itemId),
+          path,
+        });
+      }
+    }
   };
   const handleSave = async () => {};
   return (

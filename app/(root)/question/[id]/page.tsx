@@ -14,7 +14,7 @@ import React from "react";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const question = await getQuestionByID({ questionId: params.id });
-  const answers = question?.answers;
+  // const answers = question?.answers;
   const { userId: clercId } = auth();
   let mongoUser;
   if (!mongoUser) {
@@ -93,8 +93,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
       </div>
 
       <AllAnswers
-        answers={answers}
-        userId={JSON.stringify(mongoUser._id)}
+        // answers={answers}
+        userId={mongoUser._id}
         questionId={question._id}
         totalAnswers={question.answers.length}
       />

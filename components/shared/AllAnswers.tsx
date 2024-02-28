@@ -3,36 +3,39 @@ import Filter from "./Filter";
 import { AnswerFilters } from "@/constants/filters";
 // import { getAnswers } from "@/lib/actions/answer.action";
 // import { getAllUser, getUserById } from "@/lib/actions/user.action";
-import { IAnswer } from "@/database/answer.model";
+// import { IAnswer } from "@/database/answer.model";
 import Link from "next/link";
 import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
+import Votes from "./Votes";
+import { getAnswers } from "@/lib/actions/answer.action";
 interface Props {
   questionId: string;
   userId: string;
   totalAnswers: string;
   page?: string;
   filter?: string;
-  answers?: [IAnswer];
+  // answers?: [IAnswer];
 }
 const AllAnswers = async ({
   questionId,
   userId,
   totalAnswers,
   page,
-  filter,
-  answers,
+  filter, // answers,
 }: Props) => {
-  //   const result = await getAnswers({ questionId });
+  const result = await getAnswers({ questionId });
   return (
     <div className="mt-11">
       <div className="flex items-center justify-between">
-        <h3 className="primary-text-gradient">{answers?.length} Answers </h3>
+        <h3 className="primary-text-gradient">
+          {result?.answer?.length} Answers{" "}
+        </h3>
         <Filter filters={AnswerFilters} />
       </div>
       <div>
-        {answers?.map((answer) => (
+        {result?.answer?.map((answer) => (
           <article key={answer._id} className="light-border border-b py-10">
             <div className="flex items-center justify-between">
               <div className="mt-8 flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
@@ -57,7 +60,17 @@ const AllAnswers = async ({
                     </p>
                   </div>
                 </Link>
-                <div className="flex justify-end">Voting</div>
+                <div className="flex justify-end">
+                  <Votes
+                    type="Answer"
+                    itemId={JSON.stringify(answer._id)}
+                    userId={JSON.stringify(userId)}
+                    upvotes={answer.upvotes.length}
+                    hasupVoted={answer.upvotes.includes(userId)}
+                    downvotes={answer.downvotes.length}
+                    hasdownVoted={answer.downvotes.includes(userId)}
+                  />
+                </div>
               </div>
             </div>
             <ParseHTML data={answer.content} />

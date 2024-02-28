@@ -112,7 +112,6 @@ export async function questionUpvote(params: QuestionVoteParams) {
     } else {
       updateQuery = { $addToSet: { upvotes: userId } };
     }
-    console.log(updateQuery);
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
       new: true,
     });
@@ -123,8 +122,6 @@ export async function questionUpvote(params: QuestionVoteParams) {
   } catch (error) {}
 }
 export async function questionDownvote(params: QuestionVoteParams) {
-  console.log("Downvoted");
-
   const { questionId, hasdownVoted, hasupVoted, path, userId } = params;
   try {
     await connectionToDatabase();
