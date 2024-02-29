@@ -16,7 +16,7 @@ interface QuestionCardProps {
     name: string;
     picture: string;
   };
-  upvotes: number;
+  upvotes: string[];
   views: number;
   answers: Array<object>;
   createdAt: Date;
@@ -48,7 +48,7 @@ const QuestionCard = ({
         {/* if signed in edit delete actions */}
       </div>
       <div className="mt-3.5 flex flex-wrap gap-2">
-        {tags.map((tag) => (
+        {tags?.map((tag) => (
           <RenderTag key={tag._id} _id={tag._id} name={tag.name} />
         ))}
       </div>
@@ -65,7 +65,7 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/like.svg"
           alt="upvotes"
-          value={upvotes}
+          value={upvotes.length}
           title=" Votes"
           textStyles="small-medium text-dark400_light800"
         />
@@ -73,7 +73,7 @@ const QuestionCard = ({
           imgUrl="/assets/icons/message.svg"
           alt="message"
           value={answers.length}
-          title=" Votes"
+          title=" Answers"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric

@@ -7,7 +7,6 @@ import {
   CreateQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
-  // GetSavedQuestionsParams,
   QuestionVoteParams,
   ToggleSaveQuestionParams,
 } from "./shared.types";

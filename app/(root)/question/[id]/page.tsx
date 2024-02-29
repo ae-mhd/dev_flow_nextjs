@@ -15,11 +15,12 @@ import React from "react";
 const Page = async ({ params }: { params: { id: string } }) => {
   const question = await getQuestionByID({ questionId: params.id });
   // const answers = question?.answers;
-  const { userId: clercId } = auth();
+  const { userId: clerkId } = auth();
   let mongoUser;
   if (!mongoUser) {
-    mongoUser = await getUserById({ userId: clercId });
+    mongoUser = await getUserById({ userId: clerkId });
   }
+
   return (
     <>
       <div className="flex-start w-full flex-col">
