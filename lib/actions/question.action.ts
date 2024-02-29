@@ -7,7 +7,9 @@ import {
   CreateQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
+  // GetSavedQuestionsParams,
   QuestionVoteParams,
+  ToggleSaveQuestionParams,
 } from "./shared.types";
 import User from "@/database/user.model";
 import { revalidatePath } from "next/cache";
@@ -144,4 +146,34 @@ export async function questionDownvote(params: QuestionVoteParams) {
     }
     revalidatePath(path);
   } catch (error) {}
+}
+
+export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
+  const { questionId, userId, path } = params;
+  try {
+    connectionToDatabase();
+    const user = await User.findById(userId);
+    const isSaved = user.saved.includes(questionId);
+    if (isSaved) {
+      await User.findByIdAndUpdate(
+        userId,
+        { $pull: { saved: questionId } },
+        {
+          new: true,
+        }
+      );
+    } else {
+      await User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { saved: questionId } },
+        {
+          new: true,
+        }
+      );
+    }
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+  }
 }

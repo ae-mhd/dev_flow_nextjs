@@ -3,6 +3,7 @@ import { answerDownvote, answerUpvote } from "@/lib/actions/answer.action";
 import {
   questionDownvote,
   questionUpvote,
+  toggleSaveQuestion,
 } from "@/lib/actions/question.action";
 import { formatNumber } from "@/lib/utils";
 import Image from "next/image";
@@ -71,7 +72,13 @@ const Votes = ({
       }
     }
   };
-  const handleSave = async () => {};
+  const handleSave = async () => {
+    await toggleSaveQuestion({
+      questionId: JSON.parse(itemId),
+      userId: JSON.parse(userId),
+      path,
+    });
+  };
   return (
     <div className="flex gap-5">
       <div className="flex-center gap-2.5">
