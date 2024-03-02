@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import console from "console";
 
 export async function viewQuestion(params: ViewQuestionParams) {
-  const { questionId, userId, path } = params;
+  const { questionId, userId } = params;
 
   try {
     await connectionToDatabase();
@@ -24,8 +24,8 @@ export async function viewQuestion(params: ViewQuestionParams) {
       });
 
       if (existingInteraction) {
-        revalidatePath(path);
-        revalidatePath("/");
+        // revalidatePath(path);
+        // revalidatePath("/");
 
         return console.log("User has already viewed.");
       }
@@ -37,8 +37,8 @@ export async function viewQuestion(params: ViewQuestionParams) {
         question: questionId,
       });
     }
-    revalidatePath(path);
-    revalidatePath("/");
+    // revalidatePath(path);
+    // revalidatePath("/");
   } catch (error) {
     console.log(error);
     throw error;

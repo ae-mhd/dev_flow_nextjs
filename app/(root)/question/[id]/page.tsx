@@ -4,32 +4,21 @@ import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
 import Votes from "@/components/shared/Votes";
-import { viewQuestion } from "@/lib/actions/interaction.action";
 import { getQuestionByID } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { getTimestamp } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
-import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 const Page = async ({ params }: { params: { id: string } }) => {
-  const headersList = headers();
-  const fullUrl = headersList.get("referer") || "";
-  // const domain = headersList.get("host") || "";
-  // console.log(fullUrl);
-
   const question = await getQuestionByID({ questionId: params.id });
   const { userId: clerkId } = auth();
   let mongoUser;
   if (!mongoUser) {
     mongoUser = await getUserById({ userId: clerkId });
   }
-  await viewQuestion({
-    questionId: question._id,
-    userId: mongoUser ? mongoUser._id : undefined,
-    path: fullUrl,
-  });
+
   return (
     <>
       <div className="flex-start w-full flex-col">

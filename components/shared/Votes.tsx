@@ -34,12 +34,14 @@ const Votes = ({
   const router = useRouter();
 
   const path = usePathname();
-  // useEffect(() => {
-  //   viewQuestion({
-  //     questionId: JSON.parse(itemId),
-  //     userId: userId ? JSON.parse(userId) : undefined,
-  //   });
-
+  useEffect(() => {
+    type === "Question" &&
+      viewQuestion({
+        questionId: JSON.parse(itemId),
+        userId: userId ? JSON.parse(userId) : undefined,
+        path,
+      });
+  }, []);
   // }, [itemId, userId, path, router]);
   const handleVote = async (action: string) => {
     if (!userId) return;
