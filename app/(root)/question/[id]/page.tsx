@@ -9,10 +9,16 @@ import { getQuestionByID } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { getTimestamp } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 const Page = async ({ params }: { params: { id: string } }) => {
+  const headersList = headers();
+  const fullUrl = headersList.get("referer") || "";
+  // const domain = headersList.get("host") || "";
+  // console.log(fullUrl);
+
   const question = await getQuestionByID({ questionId: params.id });
   const { userId: clerkId } = auth();
   let mongoUser;
@@ -22,6 +28,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   await viewQuestion({
     questionId: question._id,
     userId: mongoUser ? mongoUser._id : undefined,
+    path: fullUrl,
   });
   return (
     <>
